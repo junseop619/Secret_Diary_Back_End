@@ -9,8 +9,11 @@ import java.util.List;
 public interface NoticeService {
     NoticeDTO saveNotice(NoticeDTO dto);
 
+<<<<<<< HEAD
     List<NoticeDTO> getReadAllNotice();
 
+=======
+>>>>>>> 37fbecc (08/18 update)
     List<RNoticeDTO> getReadAllNotice2();
 
     List<RNoticeDTO> getSearchNotice(String keyword);

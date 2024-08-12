@@ -79,6 +79,7 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeDTO;
     }
 
+<<<<<<< HEAD
     @Override
     public List<NoticeDTO> getReadAllNotice(){
         //List<Notice> entities = noticeDataHandler.readAllNotice();
@@ -113,6 +114,8 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return dtos;
     }
+=======
+>>>>>>> 37fbecc (08/18 update)
 
     @Override
     public List<RNoticeDTO> getReadAllNotice2(){
@@ -121,6 +124,10 @@ public class NoticeServiceImpl implements NoticeService {
 
         for (Notice entity : entities) {
             RNoticeDTO noticeDTO_R = new RNoticeDTO();
+<<<<<<< HEAD
+=======
+            noticeDTO_R.setNoticeId(entity.getNoticeId()); //test
+>>>>>>> 37fbecc (08/18 update)
             noticeDTO_R.setUserEmail(entity.getUserEmail());
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
@@ -137,6 +144,10 @@ public class NoticeServiceImpl implements NoticeService {
 
         for (Notice entity : entities) {
             RNoticeDTO noticeDTO_R = new RNoticeDTO();
+<<<<<<< HEAD
+=======
+            noticeDTO_R.setNoticeId(entity.getNoticeId()); //test
+>>>>>>> 37fbecc (08/18 update)
             noticeDTO_R.setUserEmail(entity.getUserEmail());
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());

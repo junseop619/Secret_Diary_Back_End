@@ -66,6 +66,7 @@ public class NoticeController {
         }
     }
 
+<<<<<<< HEAD
 
     @PostMapping("notice/upload")
     public ResponseEntity<NoticeDTO> writeNotice(@Validated @RequestBody NoticeDTO noticeDTO){
@@ -81,6 +82,8 @@ public class NoticeController {
     }
 
 
+=======
+>>>>>>> 37fbecc (08/18 update)
     //main
     @GetMapping("findAll2")
     public List<RNoticeDTO> readAllNotice2(){
@@ -92,6 +95,7 @@ public class NoticeController {
         return noticeService.getSearchNotice(keyword);
     }
 
+<<<<<<< HEAD
     /*@GetMapping("/notice/image/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
@@ -124,6 +128,9 @@ public class NoticeController {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }*/
+=======
+
+>>>>>>> 37fbecc (08/18 update)
 
     @GetMapping("/notice/image/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) {
