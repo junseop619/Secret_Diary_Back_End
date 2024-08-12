@@ -9,7 +9,9 @@ import java.util.List;
 public interface NoticeService {
     NoticeDTO saveNotice(NoticeDTO dto);
 
+
     List<NoticeDTO> getReadAllNotice();
+
 
     List<RNoticeDTO> getReadAllNotice2();
 

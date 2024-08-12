@@ -81,7 +81,6 @@ public class NoticeController {
     }
 
 
-    //main
     @GetMapping("findAll2")
     public List<RNoticeDTO> readAllNotice2(){
         return noticeService.getReadAllNotice2();
