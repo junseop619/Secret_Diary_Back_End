@@ -9,14 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import secret_diary.secret_diary_spring.DI.dto.JoinRequestDTO;
 import secret_diary.secret_diary_spring.DI.dto.LoginRequestDTO;
 import secret_diary.secret_diary_spring.DI.dto.UserDTO;
-import secret_diary.secret_diary_spring.DI.entity.User;
+import secret_diary.secret_diary_spring.DI.dto.UserRequestDTO;
 import secret_diary.secret_diary_spring.service.UserService;
 
 @RequiredArgsConstructor
@@ -29,6 +27,35 @@ public class UserController {
         userService.joinUser(joinRequestDTO);
         //return "redirect:/security/login";
         return "success";
+    }
+
+    @PutMapping("security/update/{userEmail}")
+    public ResponseEntity<String> updateUser(
+            @PathVariable @RequestPart("userEmail") String userEmail,
+            @RequestPart("userPassword") String userPassword,
+            @RequestPart("userNickName") String userNickName,
+            @RequestPart("userText") String userText,
+            @RequestPart("userImg") MultipartFile file
+    ){
+        if(file.isEmpty()){
+            return new ResponseEntity<>("File is empty", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            String fileName = file.getOriginalFilename();
+
+            UserRequestDTO userJoinRequestDTO = new UserRequestDTO();
+            userJoinRequestDTO.setUserEmail(userEmail);
+            userJoinRequestDTO.setUserPassword(userPassword);
+            userJoinRequestDTO.setUserNickName(userNickName);
+            userJoinRequestDTO.setUserText(userText);
+            userJoinRequestDTO.setUserImg(file);
+
+            userService.updateUser(userEmail, userJoinRequestDTO);
+            return new ResponseEntity<>("File uploaded successfully: " + fileName, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PostMapping("security/login")

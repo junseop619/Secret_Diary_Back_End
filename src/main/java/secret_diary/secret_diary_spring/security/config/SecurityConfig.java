@@ -57,7 +57,9 @@ public class SecurityConfig {
 
         //권한 규칙 작성
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/security/login","/security/join","/notice/upload","/upload","/findAll","/findAll2","/notice/image/{filename}","/search/notice").permitAll() //권한이 필요하지 않은 경로
+                .requestMatchers(
+                        "/security/login","/security/join","/notice/upload","/upload","/findAll","/findAll2","/notice/image/{filename}","/search/notice","/security/update/{userEmail}"
+                ).permitAll() //권한이 필요하지 않은 경로
                 .anyRequest().authenticated() //권한이 필요한 경로
         );
 

@@ -1,10 +1,7 @@
 package secret_diary.secret_diary_spring.DI.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Table(name = "users")
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
@@ -32,12 +30,20 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "userImg")
+    private String userImg;
+
 
     @Builder
-    public User(String email, String password, String name, String auth){
+    public User(String email, String password, String name, String text, String userImg, String auth){
         this.email = email;
         this.password = password;
         this.name = name;
+        this.text = text;
+        this.userImg = userImg;
     }
 
     @Override

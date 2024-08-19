@@ -66,21 +66,6 @@ public class NoticeController {
         }
     }
 
-
-    @PostMapping("notice/upload")
-    public ResponseEntity<NoticeDTO> writeNotice(@Validated @RequestBody NoticeDTO noticeDTO){
-        NoticeDTO response = noticeService.saveNotice(noticeDTO);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-
-    @GetMapping("findAll")
-    public List<NoticeDTO> readAllNotice(){
-        return noticeService.getReadAllNotice();
-    }
-
-
     @GetMapping("findAll2")
     public List<RNoticeDTO> readAllNotice2(){
         return noticeService.getReadAllNotice2();

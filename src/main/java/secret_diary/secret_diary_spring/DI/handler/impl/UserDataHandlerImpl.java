@@ -12,6 +12,7 @@ public class UserDataHandlerImpl implements UserDataHandler {
     @Autowired
     UserDAO userDAO;
 
+
     @Override
     public User getUserEntity(String userId){
         return userDAO.getUser(userId);
