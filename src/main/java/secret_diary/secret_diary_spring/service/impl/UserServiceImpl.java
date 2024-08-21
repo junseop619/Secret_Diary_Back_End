@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import secret_diary.secret_diary_spring.DI.dto.*;
+import secret_diary.secret_diary_spring.DI.entity.Notice;
 import secret_diary.secret_diary_spring.DI.entity.User;
 import secret_diary.secret_diary_spring.DI.handler.UserDataHandler;
 import secret_diary.secret_diary_spring.DI.repository.UserRepository;
@@ -23,6 +24,8 @@ import secret_diary.secret_diary_spring.service.UserService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -114,6 +117,26 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtUtil.createAccessToken(info);
         return accessToken;
     }
+
+    public RUserRequestDTO getUserInfo(String userEmail){
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(()-> new IllegalArgumentException("User not found with email: " + userEmail));
+
+        RUserRequestDTO userRequestDTO = new RUserRequestDTO();
+
+        userRequestDTO.setUserId(user.getId());
+        userRequestDTO.setUserEmail(user.getEmail());
+        userRequestDTO.setUserNickName(user.getName());
+        userRequestDTO.setUserText(user.getText());
+        userRequestDTO.setUserImgPath(user.getUserImg());
+
+        logger.info("load user service: user.name = " + user.getName());
+        logger.info("load user service: dto.name = " + userRequestDTO.getUserNickName());
+
+        return userRequestDTO;
+    }
+
+
 
     public UserDTO getUser(String userId){
         User user = userDataHandler.getUserEntity(userId);

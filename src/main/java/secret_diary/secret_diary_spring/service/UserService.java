@@ -1,15 +1,14 @@
 package secret_diary.secret_diary_spring.service;
 
-import secret_diary.secret_diary_spring.DI.dto.JoinRequestDTO;
-import secret_diary.secret_diary_spring.DI.dto.LoginRequestDTO;
-import secret_diary.secret_diary_spring.DI.dto.UserDTO;
-import secret_diary.secret_diary_spring.DI.dto.UserRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.*;
 
 public interface UserService {
 
     Long joinUser(JoinRequestDTO dto);
 
     Long updateUser(String userEmail, UserRequestDTO dto);
+
+    RUserRequestDTO getUserInfo(String userEmail);
 
     String login(LoginRequestDTO loginRequestDTO);
 
