@@ -19,6 +19,7 @@ import secret_diary.secret_diary_spring.security.jwt.JwtUtil;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    //SecurityConfig는 Spring Security의 설정을 정의하는 곳으로 애플리케이션의 요청 경로에 대한 인증 및 권한 설정, JWT 필터 적용, 암호화 방식등을 설정함
     private final UserDetailService userService;
 
     private final JwtUtil jwtUtil;
@@ -60,7 +61,12 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/security/login","/security/join","/notice/upload","/upload","/findAll",
                         "/findAll2","/notice/image/{filename}","/search/notice","/security/update/{userEmail}",
-                        "/security/user/{userEmail}","/user/image/{filename}"
+                        "/security/user/{userEmail}","/user/image/{filename}",
+                        "/security/user/{userEmail}","/friend/check/{userEmail}/{friendEmail}",
+                        "/friend/request/{userEmail}/{friendEmail}","friend/request/list/{userEmail}",
+                        "/friend/accept/{userEmail}/{friendEmail}","/friend/my/{userEmail}",
+                        "/read/notice/user","/friend/request/check/{userEmail}/{friendEmail}",
+                        "/read/detail/notice","/search/{keyword}/{userEmail}","/security/autoLogin"
                 ).permitAll() //권한이 필요하지 않은 경로
                 .anyRequest().authenticated() //권한이 필요한 경로
         );

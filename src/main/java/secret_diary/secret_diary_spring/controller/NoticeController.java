@@ -11,12 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.NoticeDTO;
-import secret_diary.secret_diary_spring.DI.dto.RNoticeDTO;
+import secret_diary.secret_diary_spring.DI.dto.Notice.NoticeDTO;
+import secret_diary.secret_diary_spring.DI.dto.Notice.RNoticeDTO;
 import secret_diary.secret_diary_spring.service.NoticeService;
 
 import java.io.IOException;
@@ -24,6 +22,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,6 +57,8 @@ public class NoticeController {
             noticeDTO.setNoticeTitle(title);
             noticeDTO.setNoticeText(text);
             noticeDTO.setNoticeImg(file);
+            //noticeDTO.setCreatedAt(LocalDateTime.now()); //date update
+            noticeDTO.setDate(LocalDateTime.now().toString());
 
             NoticeDTO response = noticeService.saveNotice(noticeDTO);
             return new ResponseEntity<>("File uploaded successfully: " + fileName, HttpStatus.OK);
@@ -71,43 +72,20 @@ public class NoticeController {
         return noticeService.getReadAllNotice2();
     }
 
+    @GetMapping("read/notice/user")
+    public List<RNoticeDTO> readUserNotice(@RequestParam("userEmail") String userEmail){
+        return noticeService.getReadUserNotice(userEmail);
+    }
+
+    @GetMapping("read/detail/notice")
+    public RNoticeDTO readDetailNotice(@RequestParam("noticeId") Long noticeId){
+        return noticeService.getReadDetailNotice(noticeId);
+    }
+
     @GetMapping("search/notice")
     public List<RNoticeDTO> searchNotice(@RequestParam("keyword") String keyword){
         return noticeService.getSearchNotice(keyword);
     }
-
-    /*@GetMapping("/notice/image/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get(uploadPath).resolve(filename);
-            Resource resource = new UrlResource(filePath.toUri());
-
-            logger.debug("Requested filename: " + filename);
-            logger.debug("Resolved file path: " + filePath.toString());
-
-            if (!resource.exists() || !resource.isReadable()) {
-                throw new RuntimeException("Could not read the file!");
-            }
-
-            // Determine the content type
-            String contentType = "application/octet-stream";
-            try {
-                contentType = Files.probeContentType(filePath);
-                if (contentType == null) {
-                    contentType = "application/octet-stream";
-                }
-            } catch (IOException e) {
-                logger.error("Could not determine file type.");
-            }
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
-        }
-    }*/
 
     @GetMapping("/notice/image/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) {
@@ -140,9 +118,4 @@ public class NoticeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
-
-
-
 }

@@ -1,17 +1,15 @@
 package secret_diary.secret_diary_spring.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.NoticeDTO;
-import secret_diary.secret_diary_spring.DI.dto.RNoticeDTO;
-import secret_diary.secret_diary_spring.DI.entity.FileInfo;
+import secret_diary.secret_diary_spring.DI.dto.Notice.NoticeDTO;
+import secret_diary.secret_diary_spring.DI.dto.Notice.RNoticeDTO;
 import secret_diary.secret_diary_spring.DI.entity.Notice;
 import secret_diary.secret_diary_spring.DI.handler.NoticeDataHandler;
 import secret_diary.secret_diary_spring.DI.repository.NoticeRepository;
@@ -19,12 +17,12 @@ import secret_diary.secret_diary_spring.service.NoticeService;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -73,8 +71,8 @@ public class NoticeServiceImpl implements NoticeService {
 
         String contentType = dto.getNoticeImg().getContentType();
 
-        Notice notice = noticeDataHandler.saveNoticeEntity(dto.getUserEmail(), dto.getNoticeTitle(), dto.getNoticeText(), saveFileName);
-        NoticeDTO noticeDTO = new NoticeDTO(notice.getNoticeId(), notice.getUserEmail(), notice.getNoticeTitle(), notice.getNoticeText(), dto.getNoticeImg());
+        Notice notice = noticeDataHandler.saveNoticeEntity(dto.getUserEmail(), dto.getNoticeTitle(), dto.getNoticeText(), saveFileName, dto.getDate());
+        NoticeDTO noticeDTO = new NoticeDTO(notice.getNoticeId(), notice.getUserEmail(), notice.getNoticeTitle(), notice.getNoticeText(), dto.getNoticeImg(), notice.getDate());
 
         return noticeDTO;
     }
@@ -109,6 +107,8 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO.setNoticeText(entity.getNoticeText());
             noticeDTO.setNoticeImg(multipartFile);
+            //noticeDTO.setCreatedAt(entity.getCreatedAt()); //date update
+            noticeDTO.setDate(entity.getDate());
             dtos.add(noticeDTO);
         }
         return dtos;
@@ -128,8 +128,55 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
             noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
+            //noticeDTO_R.setCreatedAt(entity.getCreatedAt()); //date update
+            noticeDTO_R.setDate(entity.getDate());
             dtos.add(noticeDTO_R);
         }
+        return dtos;
+    }
+
+    @Override
+    public List<RNoticeDTO> getReadUserNotice(String userEmail){
+        //List<Notice> entities = noticeRepository.findByUserEmail(userEmail);
+        String formattedEmail = "\"" + userEmail + "\"";
+
+        // 큰따옴표가 포함된 email로 검색
+        List<Notice> entities = noticeRepository.findByUserEmail(formattedEmail);
+        logger.info("Searching notices for userEmail: " + userEmail);
+        logger.info("Number of notices found: " + entities.size());
+
+        List<RNoticeDTO> dtos = new ArrayList<>();
+
+        for (Notice entity : entities) {
+            RNoticeDTO noticeDTO_R = new RNoticeDTO();
+
+            noticeDTO_R.setNoticeId(entity.getNoticeId()); //test
+            noticeDTO_R.setUserEmail(entity.getUserEmail());
+            noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
+            logger.info("load user notice: " + noticeDTO_R.getNoticeTitle());
+            noticeDTO_R.setNoticeText(entity.getNoticeText());
+            noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
+            //noticeDTO_R.setCreatedAt(entity.getCreatedAt()); //date update
+            noticeDTO_R.setDate(entity.getDate());
+            //logger.info("***********date update********: " + noticeDTO_R.getCreatedAt());
+            logger.info("***********date update********: " + noticeDTO_R.getDate());
+            dtos.add(noticeDTO_R);
+        }
+        return dtos;
+    }
+
+    @Override
+    public RNoticeDTO getReadDetailNotice(Long noticeId){
+        Notice entities = noticeRepository.findByNoticeId(noticeId);
+        RNoticeDTO dtos =  new RNoticeDTO();
+
+        dtos.setNoticeId(entities.getNoticeId());
+        dtos.setUserEmail(entities.getUserEmail());
+        dtos.setNoticeTitle(entities.getNoticeTitle());
+        dtos.setNoticeText(entities.getNoticeText());
+        dtos.setNoticeImgPath(entities.getNoticeImg());
+        //dtos.setCreatedAt(entities.getCreatedAt());
+        dtos.setDate(entities.getDate());
         return dtos;
     }
 
@@ -146,6 +193,8 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
             noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
+            //noticeDTO_R.setCreatedAt(entity.getCreatedAt());
+            noticeDTO_R.setDate(entity.getDate());
             dtos.add(noticeDTO_R);
         }
         return dtos;

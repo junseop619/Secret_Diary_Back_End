@@ -1,8 +1,10 @@
-package secret_diary.secret_diary_spring.DI.dto;
+package secret_diary.secret_diary_spring.DI.dto.Notice;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import secret_diary.secret_diary_spring.DI.entity.Notice;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +19,7 @@ public class NoticeDTO {
     private String noticeTitle;
     private String noticeText;
     private MultipartFile noticeImg;
+    //private LocalDateTime createdAt;
+    private String date;
 
 }

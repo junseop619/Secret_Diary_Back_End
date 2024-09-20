@@ -20,7 +20,7 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String email){
         logger.info("UserDetailService pass");
-        logger.info("userId :: {}", email);
+        logger.info("userEmail :: {}", email);
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException(email));
     }

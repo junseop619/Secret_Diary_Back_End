@@ -1,4 +1,4 @@
-package secret_diary.secret_diary_spring.DI.dto;
+package secret_diary.secret_diary_spring.DI.dto.User;
 
 import lombok.*;
 import secret_diary.secret_diary_spring.DI.entity.User;

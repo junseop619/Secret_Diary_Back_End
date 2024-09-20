@@ -3,8 +3,8 @@ package secret_diary.secret_diary_spring.DI.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder;
-import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.NoticeDTO;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -30,22 +30,22 @@ public class Notice {
     @Column(name = "noticeImg")
     String noticeImg;
 
+    /*
+    @Column(name = "date")
+    LocalDateTime createdAt;
+     */
+
+    @Column(name = "date")
+    String date;
+
     @Builder
-    public Notice(String userEmail, String noticeTitle, String noticeText, String noticeImg){
+    public Notice(String userEmail, String noticeTitle, String noticeText, String noticeImg, String date){
         this.userEmail = userEmail;
         this.noticeTitle = noticeTitle;
         this.noticeText = noticeText;
         this.noticeImg = noticeImg;
+        this.date = date;
+        //this.createdAt = createdAt;
     }
 
-    /*
-    public NoticeDTO toDto(){
-        return NoticeDTO.builder()
-                .noticeId(noticeId)
-                .userEmail(userEmail)
-                .noticeTitle(noticeTitle)
-                .noticeText(noticeText)
-                .noticeImg(noticeImg)
-                .build();
-    }*/
 }

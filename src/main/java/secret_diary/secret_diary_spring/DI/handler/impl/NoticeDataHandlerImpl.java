@@ -7,6 +7,7 @@ import secret_diary.secret_diary_spring.DI.dao.NoticeDAO;
 import secret_diary.secret_diary_spring.DI.entity.Notice;
 import secret_diary.secret_diary_spring.DI.handler.NoticeDataHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,8 +17,8 @@ public class NoticeDataHandlerImpl implements NoticeDataHandler {
     NoticeDAO noticeDAO;
 
     @Override
-    public Notice saveNoticeEntity(String userEmail, String noticeTitle, String noticeText, String noticeImg){
-        Notice notice = new Notice(userEmail, noticeTitle, noticeText, noticeImg);
+    public Notice saveNoticeEntity(String userEmail, String noticeTitle, String noticeText, String noticeImg, String date){
+        Notice notice = new Notice(userEmail, noticeTitle, noticeText, noticeImg, date);
         return noticeDAO.saveNotice(notice);
     }
 

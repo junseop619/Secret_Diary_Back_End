@@ -1,4 +1,4 @@
-package secret_diary.secret_diary_spring.DI.dto;
+package secret_diary.secret_diary_spring.DI.dto.Security;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -18,8 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.*;
-import secret_diary.secret_diary_spring.DI.entity.User;
+import secret_diary.secret_diary_spring.DI.dto.Security.JoinRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.Security.LoginRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.RUserRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.UserDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.UserRequestDTO;
+import secret_diary.secret_diary_spring.security.jwt.JwtUtil;
 import secret_diary.secret_diary_spring.service.UserService;
 
 import java.io.IOException;
@@ -30,11 +34,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final JwtUtil jwtUtil;
 
     @Value("${upload.path}")
     String uploadPath;
@@ -78,6 +83,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
+    @PostMapping("security/autoLogin")
+    public ResponseEntity<Void> autoLogin(@RequestHeader("Authorization") String token){
+        try{
+            // JWT 토큰에서 "Bearer " 부분 제거
+            String jwtToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+            // 토큰 검증
+            if (!jwtUtil.validateToken(jwtToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            return ResponseEntity.ok().build(); // 성공 시 200 OK 반환
+        } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
         new SecurityContextLogoutHandler().logout(request, response,
@@ -93,16 +116,12 @@ public class UserController {
         return userDTO;
     }
 
-
-
     /*
     @GetMapping("security/user/{userEmail}")
     public RUserRequestDTO myInfo(@PathVariable("userEmail") String userEmail){
         logger.info("load user: email = " + userEmail);
         return userService.getUserInfo(userEmail);
     }*/
-
-
 
     @GetMapping("security/user/{userEmail}")
     public ResponseEntity<RUserRequestDTO> myInfo(@PathVariable("userEmail") String userEmail) {
@@ -159,5 +178,25 @@ public class UserController {
             logger.error("Could not determine file type.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    //유저 검색
+    /*
+    @GetMapping("search/user")
+    public ResponseEntity<RUserRequestDTO> searchUser(@RequestParam("keyword") String keyword){
+        try {
+            RUserRequestDTO userInfo = userService.getSearchUser(keyword);
+            logger.info("load user: request = " + ResponseEntity.ok(userInfo));
+            return ResponseEntity.ok(userInfo);
+        } catch (Exception e){
+            logger.info("load user: request = " + ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }*/
+
+
+    @GetMapping("search/{keyword}/{userEmail}")
+    public List<RUserRequestDTO> searchUser2(@PathVariable("keyword") String keyword, @PathVariable("userEmail") String userEmail){
+        return userService.getSearchUser2(keyword, userEmail);
     }
 }

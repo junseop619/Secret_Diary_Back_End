@@ -1,8 +1,7 @@
 package secret_diary.secret_diary_spring.service;
 
-import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.NoticeDTO;
-import secret_diary.secret_diary_spring.DI.dto.RNoticeDTO;
+import secret_diary.secret_diary_spring.DI.dto.Notice.NoticeDTO;
+import secret_diary.secret_diary_spring.DI.dto.Notice.RNoticeDTO;
 
 import java.util.List;
 
@@ -15,5 +14,9 @@ public interface NoticeService {
 
     List<RNoticeDTO> getReadAllNotice2();
 
+    List<RNoticeDTO> getReadUserNotice(String userEmail);
+
     List<RNoticeDTO> getSearchNotice(String keyword);
+
+    RNoticeDTO getReadDetailNotice(Long noticeId);
 }

@@ -13,8 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import secret_diary.secret_diary_spring.DI.dto.*;
-import secret_diary.secret_diary_spring.DI.entity.Notice;
+import secret_diary.secret_diary_spring.DI.dto.Security.JoinRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.Security.LoginRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.RUserRequestDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.UserDTO;
+import secret_diary.secret_diary_spring.DI.dto.User.UserRequestDTO;
 import secret_diary.secret_diary_spring.DI.entity.User;
 import secret_diary.secret_diary_spring.DI.handler.UserDataHandler;
 import secret_diary.secret_diary_spring.DI.repository.UserRepository;
@@ -30,7 +33,6 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-
 public class UserServiceImpl implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -112,8 +114,10 @@ public class UserServiceImpl implements UserService {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
+        //LoginRequestDTO를 기반으로 찾은 user객체에 담긴 정보를 UserDTO에 저장함 (entity를 dto로 변환했다고 보면 됨)
         UserDTO info = modelMapper.map(user, UserDTO.class);
 
+        //UserDTO에 담긴 정보를 기반으로 jwtUtil에 있는 createAccessToken을 call하여 token을 생성하고 반환
         String accessToken = jwtUtil.createAccessToken(info);
         return accessToken;
     }
@@ -165,4 +169,41 @@ public class UserServiceImpl implements UserService {
 
         return multipartFile;
     }
+
+    /*
+    public RUserRequestDTO getSearchUser(String keyword){
+        User user = userRepository.findByEmailContaining(keyword);
+
+        RUserRequestDTO userRequestDTO = new RUserRequestDTO();
+
+        userRequestDTO.setUserId(user.getId());
+        userRequestDTO.setUserEmail(user.getEmail());
+        userRequestDTO.setUserNickName(user.getName());
+        userRequestDTO.setUserText(user.getText());
+        userRequestDTO.setUserImgPath(user.getUserImg());
+
+        logger.info("load user service: user.name = " + user.getName());
+        logger.info("load user service: dto.name = " + userRequestDTO.getUserNickName());
+
+        return userRequestDTO;
+    }*/
+
+    @Override
+    public List<RUserRequestDTO> getSearchUser2(String keyword, String userEmail){
+        List<User> entities = userRepository.findByEmailContainingAndEmailNot(keyword, userEmail);
+        List<RUserRequestDTO> dtos = new ArrayList<>();
+
+        for(User entity : entities){
+            RUserRequestDTO userRequestDTO = new RUserRequestDTO();
+
+            userRequestDTO.setUserId(entity.getId());
+            userRequestDTO.setUserEmail(entity.getEmail());
+            userRequestDTO.setUserNickName(entity.getName());
+            userRequestDTO.setUserText(entity.getText());
+            userRequestDTO.setUserImgPath(entity.getUserImg());
+            dtos.add(userRequestDTO);
+        }
+        return dtos;
+    }
+
 }
