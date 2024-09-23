@@ -66,13 +66,15 @@ public class SecurityConfig {
                         "/friend/request/{userEmail}/{friendEmail}","friend/request/list/{userEmail}",
                         "/friend/accept/{userEmail}/{friendEmail}","/friend/my/{userEmail}",
                         "/read/notice/user","/friend/request/check/{userEmail}/{friendEmail}",
-                        "/read/detail/notice","/search/{keyword}/{userEmail}","/security/autoLogin"
+                        "/read/detail/notice","/search/{keyword}/{userEmail}","/security/autoLogin",
+                        "/security/logout","/delete/{userEmail}"
                 ).permitAll() //권한이 필요하지 않은 경로
                 .anyRequest().authenticated() //권한이 필요한 경로
         );
 
         //로그아웃
         http.logout(logout -> logout
+                .logoutUrl("security/logout")
                 .logoutSuccessUrl("/security/login") //로그아웃 성공시 이동 할 페이지
                 .invalidateHttpSession(true) //세션 무효화
                 .permitAll() //로그아웃 url 접근 허용

@@ -1,5 +1,6 @@
 package secret_diary.secret_diary_spring.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -205,5 +207,20 @@ public class UserServiceImpl implements UserService {
         }
         return dtos;
     }
+
+    @Override
+    @Transactional
+    public void deleteUserByEmail(String userEmail) {
+        logger.info("delete user mail = " + userEmail);
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if (user.isPresent()) {
+            userRepository.deleteByEmail(userEmail);
+            logger.info("User deleted successfully");
+        } else {
+            logger.info("User not found");
+            throw new RuntimeException("User not found");
+        }
+    }
+
 
 }

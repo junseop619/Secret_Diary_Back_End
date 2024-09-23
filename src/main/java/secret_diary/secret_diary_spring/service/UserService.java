@@ -23,4 +23,6 @@ public interface UserService {
     //RUserRequestDTO getSearchUser(String keyword);
 
     List<RUserRequestDTO> getSearchUser2(String keyword, String userEmail);
+
+    void deleteUserByEmail(String userEmail);
 }

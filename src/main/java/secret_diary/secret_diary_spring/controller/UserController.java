@@ -101,11 +101,21 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("security/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
+        String authHeader = request.getHeader("Authorization");
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
+        //return "redirect:/security/login";
+        return "success";
     }
 
     @GetMapping("/home/{userId}")
@@ -199,4 +209,20 @@ public class UserController {
     public List<RUserRequestDTO> searchUser2(@PathVariable("keyword") String keyword, @PathVariable("userEmail") String userEmail){
         return userService.getSearchUser2(keyword, userEmail);
     }
+
+    //회원탈퇴
+    @DeleteMapping("delete/{userEmail}")
+    public ResponseEntity<String> deleteUser(@PathVariable("userEmail") String userEmail) {
+        if (userEmail == null || userEmail.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User email not provided");
+        }
+        try {
+            userService.deleteUserByEmail(userEmail);
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+
 }

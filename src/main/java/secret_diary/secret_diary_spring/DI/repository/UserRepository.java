@@ -2,6 +2,7 @@ package secret_diary.secret_diary_spring.DI.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.security.core.userdetails.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import secret_diary.secret_diary_spring.DI.entity.User;
 
@@ -21,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //User findByEmailContaining(String keyword);
 
     List<User> findByEmailContainingAndEmailNot(String keyword, String userEmail);
+
+    void deleteByEmail(String email);
 }
