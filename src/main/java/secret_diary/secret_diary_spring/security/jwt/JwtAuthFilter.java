@@ -52,6 +52,8 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
                     //이로인해 이후의 요청 처리가 인증된 사용자로 진행
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     logger.info("JwtAuthFilter second complete");
+                } else {
+                    logger.info("Invalid token");
                 }
             }
         }

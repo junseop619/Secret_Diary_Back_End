@@ -101,11 +101,21 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("security/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
+        String authHeader = request.getHeader("Authorization");
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+        logger.info("Authorization Header: " + authHeader);
+
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
+        //return "redirect:/security/login";
+        return "success";
     }
 
     @GetMapping("/home/{userId}")
