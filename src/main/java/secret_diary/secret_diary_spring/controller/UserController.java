@@ -175,21 +175,6 @@ public class UserController {
         }
     }
 
-    //유저 검색
-    /*
-    @GetMapping("search/user")
-    public ResponseEntity<RUserRequestDTO> searchUser(@RequestParam("keyword") String keyword){
-        try {
-            RUserRequestDTO userInfo = userService.getSearchUser(keyword);
-            logger.info("load user: request = " + ResponseEntity.ok(userInfo));
-            return ResponseEntity.ok(userInfo);
-        } catch (Exception e){
-            logger.info("load user: request = " + ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }*/
-
-
     @GetMapping("search/{keyword}/{userEmail}")
     public List<RUserRequestDTO> searchUser2(@PathVariable("keyword") String keyword, @PathVariable("userEmail") String userEmail){
         return userService.getSearchUser2(keyword, userEmail);
