@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import secret_diary.secret_diary_spring.security.jwt.JwtAuthFilter;
 import secret_diary.secret_diary_spring.security.jwt.JwtUtil;
 
+import java.util.stream.Stream;
+
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
@@ -23,6 +25,35 @@ public class SecurityConfig {
     private final UserDetailService userService;
 
     private final JwtUtil jwtUtil;
+
+
+    private static final String[] permit_userController_list = {
+            "security/join","security/update/{userEmail}","security/login",
+            "security/logout","/home/{userId}",
+            "security/user/{userEmail}","/user/image/{filename}",
+            "search/{keyword}/{userEmail}","delete/{userEmail}"
+    };
+
+    private static final String[] permit_noticeController_list = {
+            "upload","findAll2","read/notice/user","read/detail/notice",
+            "search/notice","/notice/image/{filename}"
+    };
+
+    private static final String[] permit_friendController_list = {
+            "friend/request/{userEmail}/{friendEmail}","friend/request/list/{userEmail}",
+            "friend/accept/{userEmail}/{friendEmail}","friend/my/{userEmail}",
+            "friend/my/search/{userEmail}/{friendEmail}",
+            "friend/check/{userEmail}/{friendEmail}",
+            "friend/request/check/{userEmail}/{friendEmail}"
+
+    };
+
+
+    String[] allPermitList = Stream.concat(
+            Stream.concat(Stream.of(permit_userController_list), Stream.of(permit_noticeController_list)),
+            Stream.of(permit_friendController_list)
+    ).toArray(String[]::new);
+
 
     @Bean
     public WebSecurityCustomizer configure(){
@@ -44,13 +75,6 @@ public class SecurityConfig {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer :: disable);
 
-        /*
-        http.formLogin(form -> form
-                .loginPage("/security/login")
-                .defaultSuccessUrl("/")
-                .usernameParameter("email")
-                .permitAll()
-        );*/
 
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
         http.addFilterBefore(new JwtAuthFilter(userService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
@@ -59,18 +83,14 @@ public class SecurityConfig {
         //권한 규칙 작성
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/security/login","/security/join","/notice/upload","/upload","/findAll",
-                        "/findAll2","/notice/image/{filename}","/search/notice","/security/update/{userEmail}",
-                        "/security/user/{userEmail}","/user/image/{filename}",
-                        "/security/user/{userEmail}","/friend/check/{userEmail}/{friendEmail}",
-                        "/friend/request/{userEmail}/{friendEmail}","friend/request/list/{userEmail}",
-                        "/friend/accept/{userEmail}/{friendEmail}","/friend/my/{userEmail}",
-                        "/read/notice/user","/friend/request/check/{userEmail}/{friendEmail}",
-                        "/read/detail/notice","/search/{keyword}/{userEmail}","/security/autoLogin",
-                        "/security/logout","/delete/{userEmail}"
+                        allPermitList
                 ).permitAll() //권한이 필요하지 않은 경로
+                .requestMatchers(
+                        "/security/autoLogin"
+                ).authenticated()
                 .anyRequest().authenticated() //권한이 필요한 경로
         );
+
 
         //로그아웃
         http.logout(logout -> logout
@@ -79,13 +99,6 @@ public class SecurityConfig {
                 .invalidateHttpSession(true) //세션 무효화
                 .permitAll() //로그아웃 url 접근 허용
         );
-
-        /*
-        //인증과 인가 실패시 Exception handler
-        http.exceptionHandling((exceptionHandling) -> exceptionHandling
-                .authenticationEntryPoint(authenticationEntryPoint) //인증되지 않은 사용자에 대해 처리하는 Handler
-                .accessDeniedHandler(accessDeniedHandler) //인증되었지만, 특정 리소스에 대한 권한이 없을 경우 호출되는 Handler
-        ); */
 
         return http.build();
     }
