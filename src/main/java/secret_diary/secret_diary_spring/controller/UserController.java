@@ -104,14 +104,6 @@ public class UserController {
     @PostMapping("security/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
         String authHeader = request.getHeader("Authorization");
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-        logger.info("Authorization Header: " + authHeader);
-
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
         //return "redirect:/security/login";
@@ -125,13 +117,6 @@ public class UserController {
 
         return userDTO;
     }
-
-    /*
-    @GetMapping("security/user/{userEmail}")
-    public RUserRequestDTO myInfo(@PathVariable("userEmail") String userEmail){
-        logger.info("load user: email = " + userEmail);
-        return userService.getUserInfo(userEmail);
-    }*/
 
     @GetMapping("security/user/{userEmail}")
     public ResponseEntity<RUserRequestDTO> myInfo(@PathVariable("userEmail") String userEmail) {
