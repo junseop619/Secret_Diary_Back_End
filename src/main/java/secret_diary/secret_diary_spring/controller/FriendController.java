@@ -69,14 +69,6 @@ public class FriendController {
         return friendService.getSearchMyFriend(userEmail, friendEmail);
     }
 
-
-    /*
-    //유저 검색
-    @GetMapping("search/user")
-    public List<RUserRequestDTO> searchUser(@RequestParam("keyword") String keyword){
-        return friendService.getSearchUser(keyword);
-    }*/
-
     //친구 검증
     @GetMapping("friend/check/{userEmail}/{friendEmail}")
     public boolean checkFriendExist(@PathVariable("userEmail") String userEmail, @PathVariable("friendEmail") String friendEmail){

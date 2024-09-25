@@ -49,7 +49,6 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public List<FriendRequestDTO> getReadAllRequest(String email){
-        //List<FriendRequest> entities = friendRequestRepository.findByUserEmail(email);
         List<FriendRequest> entities = friendRequestRepository.findByFriendEmail(email);
         List<FriendRequestDTO> dtos = new ArrayList<>();
 
@@ -74,7 +73,6 @@ public class FriendServiceImpl implements FriendService {
     @Override
     @Transactional
     public void deleteRequest(String userEmail, String friendEmail){
-        //friendRequestRepository.deleteByUserEmailAndFriendEmail(userEmail, friendEmail);
         friendRequestRepository.deleteByUserEmailAndFriendEmail(friendEmail, userEmail);
     }
 

@@ -45,16 +45,7 @@ public class NoticeServiceImpl implements NoticeService {
 
         MultipartFile file = dto.getNoticeImg();
 
-        if (file == null) {
-            logger.info("No file provided.");
-            //throw new IllegalArgumentException("File must not be null");
-        }
-
         String originalFileName = file.getOriginalFilename();
-        if (originalFileName == null) {
-            logger.info("Original file name is null.");
-            //throw new IllegalArgumentException("File name must not be null");
-        }
 
         String saveFileName = createSaveFileName(originalFileName);
 
@@ -64,12 +55,9 @@ public class NoticeServiceImpl implements NoticeService {
             dto.getNoticeImg().transferTo(new File(getFullPath(saveFileName)));
 
         } catch (IOException e){
-            logger.info("service failed");
             e.printStackTrace();
             throw new RuntimeException("Failed to save file", e);
         }
-
-        String contentType = dto.getNoticeImg().getContentType();
 
         Notice notice = noticeDataHandler.saveNoticeEntity(dto.getUserEmail(), dto.getNoticeTitle(), dto.getNoticeText(), saveFileName, dto.getDate());
         NoticeDTO noticeDTO = new NoticeDTO(notice.getNoticeId(), notice.getUserEmail(), notice.getNoticeTitle(), notice.getNoticeText(), dto.getNoticeImg(), notice.getDate());
@@ -79,7 +67,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeDTO> getReadAllNotice(){
-        //List<Notice> entities = noticeDataHandler.readAllNotice();
         List<Notice> entities = noticeRepository.findAll();
         List<NoticeDTO> dtos = new ArrayList<>();
 
@@ -96,10 +83,7 @@ public class NoticeServiceImpl implements NoticeService {
 
             try {
                 multipartFile = convertFileToMultipartFile(file,file_name,file_path);
-                logger.info("File name: " + multipartFile.getOriginalFilename());
-                logger.info("File size: " + multipartFile.getSize());
             } catch (IOException e){
-                logger.error("Error converting file to MultipartFile", e);
                 e.printStackTrace();
             }
 
@@ -107,7 +91,6 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO.setNoticeText(entity.getNoticeText());
             noticeDTO.setNoticeImg(multipartFile);
-            //noticeDTO.setCreatedAt(entity.getCreatedAt()); //date update
             noticeDTO.setDate(entity.getDate());
             dtos.add(noticeDTO);
         }
@@ -128,7 +111,6 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
             noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
-            //noticeDTO_R.setCreatedAt(entity.getCreatedAt()); //date update
             noticeDTO_R.setDate(entity.getDate());
             dtos.add(noticeDTO_R);
         }
@@ -137,14 +119,10 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<RNoticeDTO> getReadUserNotice(String userEmail){
-        //List<Notice> entities = noticeRepository.findByUserEmail(userEmail);
         String formattedEmail = "\"" + userEmail + "\"";
 
         // 큰따옴표가 포함된 email로 검색
         List<Notice> entities = noticeRepository.findByUserEmail(formattedEmail);
-        logger.info("Searching notices for userEmail: " + userEmail);
-        logger.info("Number of notices found: " + entities.size());
-
         List<RNoticeDTO> dtos = new ArrayList<>();
 
         for (Notice entity : entities) {
@@ -153,13 +131,9 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO_R.setNoticeId(entity.getNoticeId()); //test
             noticeDTO_R.setUserEmail(entity.getUserEmail());
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
-            logger.info("load user notice: " + noticeDTO_R.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
             noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
-            //noticeDTO_R.setCreatedAt(entity.getCreatedAt()); //date update
             noticeDTO_R.setDate(entity.getDate());
-            //logger.info("***********date update********: " + noticeDTO_R.getCreatedAt());
-            logger.info("***********date update********: " + noticeDTO_R.getDate());
             dtos.add(noticeDTO_R);
         }
         return dtos;
@@ -175,7 +149,6 @@ public class NoticeServiceImpl implements NoticeService {
         dtos.setNoticeTitle(entities.getNoticeTitle());
         dtos.setNoticeText(entities.getNoticeText());
         dtos.setNoticeImgPath(entities.getNoticeImg());
-        //dtos.setCreatedAt(entities.getCreatedAt());
         dtos.setDate(entities.getDate());
         return dtos;
     }
@@ -193,7 +166,6 @@ public class NoticeServiceImpl implements NoticeService {
             noticeDTO_R.setNoticeTitle(entity.getNoticeTitle());
             noticeDTO_R.setNoticeText(entity.getNoticeText());
             noticeDTO_R.setNoticeImgPath(entity.getNoticeImg());
-            //noticeDTO_R.setCreatedAt(entity.getCreatedAt());
             noticeDTO_R.setDate(entity.getDate());
             dtos.add(noticeDTO_R);
         }

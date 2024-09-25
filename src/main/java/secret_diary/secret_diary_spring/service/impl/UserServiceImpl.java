@@ -68,15 +68,7 @@ public class UserServiceImpl implements UserService {
         //image
         MultipartFile file = dto.getUserImg();
 
-        if (file == null) {
-            logger.info("No file provided.");
-        }
-
         String originalFileName = file.getOriginalFilename();
-
-        if (originalFileName == null) {
-            logger.info("Original file name is null.");
-        }
 
         String saveFileName = createSaveFileName(originalFileName);
 
@@ -88,7 +80,6 @@ public class UserServiceImpl implements UserService {
             dto.getUserImg().transferTo(new File(getFullPath(saveFileName)));
 
         } catch (IOException e){
-            logger.info("service failed");
             e.printStackTrace();
             throw new RuntimeException("Failed to save file", e);
         }
@@ -135,10 +126,6 @@ public class UserServiceImpl implements UserService {
         userRequestDTO.setUserNickName(user.getName());
         userRequestDTO.setUserText(user.getText());
         userRequestDTO.setUserImgPath(user.getUserImg());
-
-        logger.info("load user service: user.name = " + user.getName());
-        logger.info("load user service: dto.name = " + userRequestDTO.getUserNickName());
-
         return userRequestDTO;
     }
 
@@ -172,24 +159,6 @@ public class UserServiceImpl implements UserService {
         return multipartFile;
     }
 
-    /*
-    public RUserRequestDTO getSearchUser(String keyword){
-        User user = userRepository.findByEmailContaining(keyword);
-
-        RUserRequestDTO userRequestDTO = new RUserRequestDTO();
-
-        userRequestDTO.setUserId(user.getId());
-        userRequestDTO.setUserEmail(user.getEmail());
-        userRequestDTO.setUserNickName(user.getName());
-        userRequestDTO.setUserText(user.getText());
-        userRequestDTO.setUserImgPath(user.getUserImg());
-
-        logger.info("load user service: user.name = " + user.getName());
-        logger.info("load user service: dto.name = " + userRequestDTO.getUserNickName());
-
-        return userRequestDTO;
-    }*/
-
     @Override
     public List<RUserRequestDTO> getSearchUser2(String keyword, String userEmail){
         List<User> entities = userRepository.findByEmailContainingAndEmailNot(keyword, userEmail);
@@ -211,13 +180,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserByEmail(String userEmail) {
-        logger.info("delete user mail = " + userEmail);
         Optional<User> user = userRepository.findByEmail(userEmail);
         if (user.isPresent()) {
             userRepository.deleteByEmail(userEmail);
-            logger.info("User deleted successfully");
         } else {
-            logger.info("User not found");
             throw new RuntimeException("User not found");
         }
     }

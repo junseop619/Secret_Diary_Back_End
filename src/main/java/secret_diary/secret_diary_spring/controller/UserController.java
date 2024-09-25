@@ -47,7 +47,6 @@ public class UserController {
     @PostMapping("security/join")
     public String signup(@Validated @RequestBody JoinRequestDTO joinRequestDTO){
         userService.joinUser(joinRequestDTO);
-        //return "redirect:/security/login";
         return "success";
     }
 
@@ -106,38 +105,23 @@ public class UserController {
         String authHeader = request.getHeader("Authorization");
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
-        //return "redirect:/security/login";
         return "success";
-    }
-
-    @GetMapping("/home/{userId}")
-    public UserDTO loginUser(@PathVariable String userId){
-        long startTime = System.currentTimeMillis();
-        UserDTO userDTO = userService.getUser(userId);
-
-        return userDTO;
     }
 
     @GetMapping("security/user/{userEmail}")
     public ResponseEntity<RUserRequestDTO> myInfo(@PathVariable("userEmail") String userEmail) {
         if (userEmail == null || userEmail.isEmpty()) {
-            logger.info("load user: request = " + ResponseEntity.badRequest().build());
             return ResponseEntity.badRequest().build(); // 400 Bad Request
         }
-
         try {
             RUserRequestDTO userInfo = userService.getUserInfo(userEmail);
-
             if (userInfo != null) {
-                logger.info("load user: request = " + ResponseEntity.ok(userInfo));
                 return ResponseEntity.ok(userInfo); // 200 OK
             } else {
-                logger.info("load user: request = " + ResponseEntity.notFound().build());
                 return ResponseEntity.notFound().build(); // 404 Not Found
             }
         } catch (Exception e) {
             // 로깅 및 에러 처리
-            logger.info("load user: request = " + ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error
         }
     }
@@ -148,9 +132,6 @@ public class UserController {
         try {
             Path filePath = Paths.get(uploadPath).resolve(filename);
             Resource resource = new UrlResource(filePath.toUri());
-
-            logger.debug("Requested filename: " + filename);
-            logger.debug("Resolved file path: " + filePath.toString());
 
             if (!resource.exists() || !resource.isReadable()) {
                 throw new RuntimeException("Could not read the file!");
@@ -167,10 +148,8 @@ public class UserController {
                     .body(resource);
 
         } catch (MalformedURLException e) {
-            logger.error("Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (IOException e) {
-            logger.error("Could not determine file type.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

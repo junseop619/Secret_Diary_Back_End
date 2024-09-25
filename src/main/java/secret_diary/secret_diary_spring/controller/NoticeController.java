@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
-//@Controller
 @RestController
 public class NoticeController {
 
@@ -57,7 +56,6 @@ public class NoticeController {
             noticeDTO.setNoticeTitle(title);
             noticeDTO.setNoticeText(text);
             noticeDTO.setNoticeImg(file);
-            //noticeDTO.setCreatedAt(LocalDateTime.now()); //date update
             noticeDTO.setDate(LocalDateTime.now().toString());
 
             NoticeDTO response = noticeService.saveNotice(noticeDTO);
@@ -93,9 +91,6 @@ public class NoticeController {
             Path filePath = Paths.get(uploadPath).resolve(filename);
             Resource resource = new UrlResource(filePath.toUri());
 
-            logger.debug("Requested filename: " + filename);
-            logger.debug("Resolved file path: " + filePath.toString());
-
             if (!resource.exists() || !resource.isReadable()) {
                 throw new RuntimeException("Could not read the file!");
             }
@@ -111,10 +106,8 @@ public class NoticeController {
                     .body(resource);
 
         } catch (MalformedURLException e) {
-            logger.error("Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (IOException e) {
-            logger.error("Could not determine file type.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
