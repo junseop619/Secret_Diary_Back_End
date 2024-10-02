@@ -79,6 +79,8 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<FriendDTO> getReadMyFriend(String userEmail){
         List<Friend> entities = friendRepository.findByUserEmail(userEmail);
+        List<Friend> entities2 = friendRepository.findByFriendEmail(userEmail);
+        //List<Friend> entities = friendRepository.findByUserEmailOrFriendEmail(userEmail, userEmail);
         List<FriendDTO> dtos = new ArrayList<>();
 
         for(Friend entity : entities){
@@ -88,6 +90,15 @@ public class FriendServiceImpl implements FriendService {
             friendDTO.setFriendEmail(entity.getFriendEmail());
             dtos.add(friendDTO);
         }
+
+        for(Friend entity2 : entities2){
+            FriendDTO friendDTO = new FriendDTO();
+            friendDTO.setUserEmail(entity2.getFriendEmail());
+            friendDTO.setFriendEmail(entity2.getUserEmail());
+            dtos.add(friendDTO);
+        }
+
+
         return dtos;
     }
 
@@ -109,7 +120,12 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public Boolean isExistMyFriend(String userEmail, String friendEmail){
         Optional<Friend> friend = friendRepository.findByUserEmailAndFriendEmail(userEmail, friendEmail);
-        return friend.isPresent();
+        Optional<Friend> friend2 = friendRepository.findByUserEmailAndFriendEmail(friendEmail, userEmail);
+        if(friend.isPresent() || friend2.isPresent()){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

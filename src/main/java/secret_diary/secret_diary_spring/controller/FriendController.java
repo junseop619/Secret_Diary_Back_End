@@ -51,7 +51,7 @@ public class FriendController {
     @PostMapping("friend/accept/{userEmail}/{friendEmail}")
     public String acceptFriendRequest(@PathVariable("userEmail") String userEmail, @PathVariable("friendEmail") String friendEmail){
         friendService.getAcceptFriendRequest(userEmail, friendEmail);
-        friendService.getAcceptFriendRequest(friendEmail, userEmail);
+        //friendService.getAcceptFriendRequest(friendEmail, userEmail);
         friendService.deleteRequest(userEmail, friendEmail);
         return "accept success";
     }

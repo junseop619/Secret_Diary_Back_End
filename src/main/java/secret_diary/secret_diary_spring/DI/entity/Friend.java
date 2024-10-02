@@ -1,9 +1,6 @@
 package secret_diary.secret_diary_spring.DI.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +13,10 @@ import lombok.NoArgsConstructor;
 public class Friend {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "relationId",updatable = false)
+    private Long relationId;
+
     @Column(name = "userEmail", updatable = false)
     private String userEmail;
 
