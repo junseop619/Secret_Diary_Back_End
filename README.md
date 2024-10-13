@@ -17,6 +17,31 @@
 
 3. Service structure
 
+    3-1. User structure
+
+    3-2. Security structure
+
+    &emsp;3-2-1. 구조도
+
+    &emsp;3-2-2. 각 기능에 대한 설명
+
+    &emsp;3-2-3. 현재 제공하고 있는 service
+
+
+    3-3. Notice structure
+
+    3-4. Friend structure
+
+
+5. 기능 구현 참고 문서(본인 블로그)
+
+    4-1. ㅁㅁㅁㅁㅁㅁ
+
+    4-2. ㅁㅁㅁㅁㅁㅁ
+
+
+
+
 
 
 
