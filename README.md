@@ -21,7 +21,7 @@
 
     3-2. Security structure
 
-    &emsp;3-2-1. 구조도
+    &emsp;3-2-1. 기능 구조도
 
     &emsp;3-2-2. 각 기능에 대한 설명
 
@@ -38,14 +38,6 @@
     4-1. ㅁㅁㅁㅁㅁㅁ
 
     4-2. ㅁㅁㅁㅁㅁㅁ
-
-
-
-
-
-
-
-
 
 <br></br>
 
@@ -67,15 +59,58 @@
 
 ![js](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 
+<br></br>
+
+# 2. Database structure
+
+(image)
+
+<br></br>
+
+# 3. Service structure
+
+## 3-1. User structure
+
+- do 전달 구조도
+- 재공기능 나열
+
+<br></br>
+
+## 3-2. Security structure
+
+> ## 3-2-1. 기능 구조도
+
+(image)
+
+<br></br>
+
+> ## 3-2-2. 각 기능에 대한 설명
+
+(blog link)
+
+<br></br>
+
+> ## 3-2-3. 현재 제공하고 있는 service
+
+- auto login, 헤다만 달면 현재 코드에서도 추가적을로 authuntication 가능하다 뭐시기
+
+<br></br>
+
+## 3-3. Notice structure
+
+- do 전달 구조도
+- 제공기능 나열
+
+<br></br>
+
+## 3-4. Friend structure
+
+- do 전달 구조도(friend, friend request)
+- 제공 기능 나열
+
+<br></br>
+
+# 4. 사용 기술
 
 
-해당 코드에 대한 설명은 아래 블로그 링크를 참조 부탁 드립니다 (아직 미작성)
 
-1. jwt
-- link
-  
-2. security
-- link
-
-3. image upload & download
-- link
