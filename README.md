@@ -17,7 +17,7 @@
 
 3. Service structure
 
-    3-1. User structure
+    3-1. User service
 
     3-2. Security structure
 
@@ -28,7 +28,7 @@
     &emsp;3-2-3. 현재 제공하고 있는 service
 
 
-    3-3. Notice structure
+    3-3. Notice service
 
     3-4. Friend structure
 
@@ -47,7 +47,9 @@
 
 ## 1-1. 프로젝트 소개
 
-ㅁㅁㅁㅁㅁㅁ
+[Secret_Diary_Front_End](https://github.com/junseop619/SecretDiary_Front_End) 의 서버 기능 구현을 위한 Back-end 프로젝트로 Spring을 이용하여 구현하였습니다.
+
+<br></br>
 
 ## 1-2. 사용 기술
 
@@ -63,16 +65,55 @@
 
 # 2. Database structure
 
-(image)
+![SecretDiary_DB](https://github.com/user-attachments/assets/abb890c9-7f6e-41cc-be06-84f64a0be136)
 
 <br></br>
 
 # 3. Service structure
 
-## 3-1. User structure
+저의 Secret Diary 프로젝트에서 사용하고 있는 Spring에서 데이터를 주고받는 구조를 계층형 아키텍쳐(Layered Architecture)를 통해 보여드리겠습니다.
 
-- do 전달 구조도
-- 재공기능 나열
+첫 번째 Layered Architecture
+
+![DO1](https://github.com/user-attachments/assets/9a1f364d-d791-42a3-b599-f8159ad1d577)
+
+두 번째 Layered Architecture
+
+![DO2](https://github.com/user-attachments/assets/300c9dd0-0bf4-4044-8764-72a3481c13b9)
+
+현재 저의 프로젝트에서는 2개의 아키텍쳐를 사용중입니다.
+
+첫 번째 아키텍쳐의 경우 service와 Repository가 Entity를 통해 직접적으로 data를 주고받는 아키텍쳐입니다.
+
+두 번째 아키텍쳐의 경우 service와 DB 사이에 DAO 계층이 중간에 존재하여 data를 주고받는 아키텍쳐입니다.
+
+첫 번째 아키텍쳐의 경우 간결하고 직관적이나 확장성의 문제를 갖고 있습니다.
+
+두 번째 아키텍쳐의 경우 비즈니스 로직과 데이터 접근 로직을 분리하여 유지보수성과 확장성을 높일 수 있으나 복잡성이 증가한다는 문제를 갖고 있습니다.
+
+해당 프로젝트에서 대부분 첫 번째 아키텍쳐를 선정하였으나 일부 기능에 대해서는 두 번째 아키텍쳐를 선택하여 구현하였습니다. 
+
+각 기능 구현에 있어서 아키텍쳐 선정 기준의 경우 2 case 모두 보여주기 위한 이유였습니다.
+
+<br></br>
+
+## 3-1. User service
+
+User controller를 통해 제공하고 있는 기능입니다. 해당 기능 구현 방식에 대해서는 항목 ~을 참고해주시길 바랍니다.
+
+- 회원가입
+
+- 로그인
+
+- 자동 로그인
+
+- User 프로필 정보(image) 변경
+
+- 로그아웃
+
+- 내 정보 가져오기
+
+- 회원 탈퇴
 
 <br></br>
 
@@ -80,7 +121,7 @@
 
 > ## 3-2-1. 기능 구조도
 
-(image)
+![security_structure](https://github.com/user-attachments/assets/8a45e8ca-c07b-4990-8b1a-900a6525b623)
 
 <br></br>
 
@@ -96,10 +137,19 @@
 
 <br></br>
 
-## 3-3. Notice structure
+## 3-3. Notice service
 
-- do 전달 구조도
-- 제공기능 나열
+Notice controller를 통해 제공하고 있는 기능입니다. 해당 기능 구현 방식에 대해서는 항목 ~을 참고해주시길 바랍니다.
+
+- 게시물 등록하기
+
+- 내 게시물 리스트 보기
+
+- 친구 게시물 리스트 보기
+
+- 내 게시물 검색하기
+
+- 특정 게시물 자세히 보기
 
 <br></br>
 
