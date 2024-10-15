@@ -155,8 +155,23 @@ Notice controller를 통해 제공하고 있는 기능입니다. 해당 기능 �
 
 ## 3-4. Friend structure
 
-- do 전달 구조도(friend, friend request)
-- 제공 기능 나열
+![friend_structure](https://github.com/user-attachments/assets/98443e87-add7-42ac-89e3-8b2867e9b689)
+
+위 사진은 친구관리와 친구 요청을 도식화한 구조도 입니다.
+
+아래는 Friend controller를 통해 제공하고 있는 기능입니다. 해당 기능 구현 방식에 대해서는 항목 ~를 참고해주시길 바랍니다.
+
+- 친구 요청 보내기
+
+- 친구 요청 목록 보기
+
+- 친구 요청 수락하기
+
+- 내 친구 보기
+
+- 내 친구 검색
+
+- 친구 검증 (친구 여부 확인)
 
 <br></br>
 
