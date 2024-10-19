@@ -33,11 +33,17 @@
     3-4. Friend structure
 
 
-5. 기능 구현 참고 문서(본인 블로그)
+4. 사용 기술
 
-    4-1. ㅁㅁㅁㅁㅁㅁ
+    4-1. Retrofit2를 이용한 안드로이드와 스프링 서버 통신
 
-    4-2. ㅁㅁㅁㅁㅁㅁ
+    4-2. Spring에서 image upload & download
+
+    4-3. Spring JPA
+
+    4-4. JWT(Json Web Token)
+
+    4-5. Spring Security (Login, AutoLogin, Logout)
 
 <br></br>
 
