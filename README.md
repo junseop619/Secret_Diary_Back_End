@@ -135,6 +135,8 @@ User controller를 통해 제공하고 있는 기능입니다. 해당 기능 구
 
 3-2-1의 Security strucure를 구성하고 있는 파일들과 기능에 대한 내용은 제가 블로그에 작성했던 [Spring에서 security 적용 방법과 자동 로그인 구현](https://pinlib.tistory.com/entry/SpringSecuritywithAutoLogin) 를 참고 부탁드립니다.
 
+또한 유사 기술에 대해서는 항목 4를 참고 부탁드립니다.
+
 <br></br>
 
 > ## 3-2-3. 현재 제공하고 있는 service
@@ -145,7 +147,7 @@ User controller를 통해 제공하고 있는 기능입니다. 해당 기능 구
 
 ## 3-3. Notice service
 
-Notice controller를 통해 제공하고 있는 기능입니다. 해당 기능 구현 방식에 대해서는 항목 ~을 참고해주시길 바랍니다.
+Notice controller를 통해 제공하고 있는 기능입니다. 해당 기능 구현 방식에 대해서는 항목 4를 참고해주시길 바랍니다.
 
 - 게시물 등록하기
 
